@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scenes/CleverbotConverser.gd" type="Script" id=1]
+
+[node name="CleverbotConverser" type="Node"]
+script = ExtResource( 1 )
+
+[node name="CleverbotHTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="TTSHTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="request_completed" from="CleverbotHTTPRequest" to="." method="_on_CleverbotHTTPRequest_request_completed"]
+[connection signal="request_completed" from="TTSHTTPRequest" to="." method="_on_TTSHTTPRequest_request_completed"]
