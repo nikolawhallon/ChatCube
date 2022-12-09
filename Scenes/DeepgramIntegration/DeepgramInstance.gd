@@ -47,14 +47,14 @@ func initialize(api_key):
 
 	if OS.get_name() == "HTML5":
 		var protocols = PoolStringArray(["token", api_key])
-		var err = client.connect_to_url("wss://api.deepgram.com/v1/listen?encoding=linear16&sample_rate=" + String(mix_rate) + "&channels=1", protocols, false, PoolStringArray())
+		var err = client.connect_to_url("wss://api.deepgram.com/v1/listen?tag=chatcube&encoding=linear16&sample_rate=" + String(mix_rate) + "&channels=1", protocols, false, PoolStringArray())
 		if err != OK:
 			print("Unable to connect")
 			emit_signal("message_received", "unable to connect to deepgram;")
 			set_process(false)
 	else:
 		var headers = PoolStringArray(["Authorization: Token " + api_key])
-		var err = client.connect_to_url("wss://api.deepgram.com/v1/listen?encoding=linear16&sample_rate=" + String(mix_rate) + "&channels=1", PoolStringArray(), false, headers)
+		var err = client.connect_to_url("wss://api.deepgram.com/v1/listen?tag=chatcube&encoding=linear16&sample_rate=" + String(mix_rate) + "&channels=1", PoolStringArray(), false, headers)
 		if err != OK:
 			print("Unable to connect")
 			emit_signal("message_received", "unable to connect to deepgram;")
