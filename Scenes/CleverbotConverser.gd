@@ -27,23 +27,30 @@ func _on_CleverbotHTTPRequest_request_completed(_result, response_code, _headers
 	var output = response_dict.result["output"]
 	print(output)
 
-	var url = "https://dgversetts.deepgram.com/text-to-speech/polly/pcm?text=" + output.percent_encode();
+	var url = "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM";
 
-	$TTSHTTPRequest.request(url)
+	var data = {"text": output}
+	var query = JSON.print(data)
+
+	print(query)
+
+	var headers = ["accept: audio/mpeg", "xi-api-key: INSERT_YOUR_ELEVENLABS_API_KEY", "Content-Type: application/json"]
+	$TTSHTTPRequest.request(url, headers, false, HTTPClient.METHOD_POST, query)
 
 func _on_TTSHTTPRequest_request_completed(_result, response_code, _headers, body):
 	if response_code != 200:
+		print("failed with response code:")
+		print(response_code)
+		print("and body:")
+		print(body.get_string_from_utf8())
 		return
 
 	var player = AudioStreamPlayer3D.new()
 	if transformToPlayAt:
 		player.global_transform = transformToPlayAt
 	self.add_child(player)
-	var sound = AudioStreamSample.new()
+
+	var sound = AudioStreamMP3.new()
 	sound.data = body
-	sound.format = AudioStreamSample.FORMAT_16_BITS
-	sound.loop_mode = AudioStreamSample.LOOP_DISABLED
-	sound.stereo = false
-	sound.mix_rate = 16000
 	player.stream = sound
 	player.play()
